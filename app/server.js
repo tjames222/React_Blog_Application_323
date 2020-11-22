@@ -1,19 +1,26 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const path = require('path');
 const port = process.env.PORT || 3001;
 
-// app.use(express.static(__dirname));
-// app.use(express.static(path.join(__dirname, 'client/build')));
+// Connect to MySQL DB
+const { connect } = require('./lib/db/conn');
+connect();
+
+// Create API Routes
+const { createUserRoutes } = require('./lib/routes');
+createUserRoutes(app);
 
 // Express only serves static assets in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'client/build')));
+  app.use(express.static(path.join(__dirname, 'client/build', 'index.html')));
 }
 
-app.get('/ping', (req, res) => res.send('pong'));
-
-// app.get('/*', (req, res) => res.sendFile(path.join(__dirname, 'client', 'build', 'index.html')));
+// For testing local functionality
+if (process.env.NODE_ENV !== 'production') {
+  app.get('/ping', (req, res) => res.send('pong'));
+}
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

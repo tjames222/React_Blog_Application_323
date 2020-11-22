@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import { LinkContainer } from 'react-router-bootstrap';
 
-function App() {
+// Pages
+import { Home, About, Posts } from './pages';
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Navbar collapseOnSelect bg='dark' expand='md' className='mb-3'>
+        <Navbar.Brand className='font-weight-bold text-muted'>
+          The "Blogs are Cool" Blog
+        </Navbar.Brand>
+        <Nav className='mr-auto'>
+          <Nav.Item>
+            <LinkContainer to='/'>
+              <Nav.Link>Home</Nav.Link>
+            </LinkContainer>
+          </Nav.Item>
+          <Nav.Item>
+            <LinkContainer to='/about'>
+              <Nav.Link>About</Nav.Link>
+            </LinkContainer>
+          </Nav.Item>
+          <Nav.Item>
+            <LinkContainer to='/posts'>
+              <Nav.Link>Posts</Nav.Link>
+            </LinkContainer>
+          </Nav.Item>
+        </Nav>
+      </Navbar>
+      {/* A <Switch> looks through its children <Route>s and
+    renders the first one that matches the current URL. */}
+      <Switch>
+        <Route path='/about'>
+          <About />
+        </Route>
+        <Route path='/posts'>
+          <Posts />
+        </Route>
+        <Route path='/'>
+          <Home />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
-
-export default App;
