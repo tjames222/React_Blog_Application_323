@@ -3,26 +3,25 @@ const { connection } = require('../conn');
 
 const all = ({ limit, sort } = {}) => {
   // TODO: Use filtering
-  return connection.query('SELECT * FROM GCU.Users', (error, results) => {
-    if (error) throw error;
-    console.debug('all users -- ', results);
-    const result = [];
-    if (results.length) {
-      for (var i = 0; i < results.length; i++) {
-        result.push(results[i]);
-      }
-    }
-    return result;
-  });
+  return new Promise((res, rej) =>
+    connection.query('SELECT * FROM GCU.Users', (error, results) => {
+      if (error) rej(error);
+      console.debug('all users -- ', results);
+
+      return res(results);
+    })
+  );
 };
 const get = ({ email } = {}) => {
-  return connection.query(
-    mysql.format('SELECT * FROM GCU.Users WHERE Email = ?', [email]),
-    (error, results) => {
-      if (error) throw error;
-      console.debug('get user -- ', results);
-      return results;
-    }
+  return new Promise((res, rej) =>
+    connection.query(
+      mysql.format('SELECT * FROM GCU.Users WHERE Email = ?', [email]),
+      (error, results) => {
+        if (error) rej(error);
+        console.debug('get user -- ', results);
+        res(results);
+      }
+    )
   );
 };
 

@@ -2,7 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const path = require('path');
+const bodyParser = require('body-parser');
 const port = process.env.PORT || 3001;
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Connect to MySQL DB
 const { connect } = require('./lib/db/conn');
