@@ -9,8 +9,9 @@ const { connect } = require('./lib/db/conn');
 connect();
 
 // Create API Routes
-const { createUserRoutes } = require('./lib/routes');
+const { createUserRoutes, createPostRoutes } = require('./lib/routes');
 createUserRoutes(app);
+createPostRoutes(app);
 
 // Express only serves static assets in production
 if (process.env.NODE_ENV === 'production') {
