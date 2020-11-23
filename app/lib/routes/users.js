@@ -4,13 +4,13 @@ const { wrapError } = require('../helpers/err');
 const createUserRoutes = (server) => {
   server.get('/api/user/:email', (req, res) =>
     wrapError(res, async () => {
-      const result = await get({ email: req.params.email }).catch((_) => res.status(502));
+      const result = await get({ email: req.params.email });
       res.json(result);
     })
   );
   server.get('/api/users', (req, res) =>
     wrapError(res, async () => {
-      const result = await all().catch((_) => res.status(502));
+      const result = await all();
       res.json(result);
     })
   );
