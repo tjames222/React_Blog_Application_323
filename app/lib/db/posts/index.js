@@ -4,20 +4,24 @@ const { v4: uuid } = require('uuid');
 
 const all = ({ limit, sort } = {}) => {
   // TODO: Use filtering
-  return connection.query('SELECT * FROM GCU.Posts', (error, results) => {
-    if (error) throw error;
-    console.debug('all posts -- ', results);
-    return results;
-  });
+  return new Promise((res, rej) =>
+    connection.query('SELECT * FROM GCU.Posts', (error, results) => {
+      if (error) rej(error);
+      console.debug('all posts -- ', results);
+      res(results);
+    })
+  );
 };
 const get = ({ id } = {}) => {
-  return connection.query(
-    mysql.format('SELECT * FROM GCU.Posts WHERE ID = ?', [id]),
-    (error, results) => {
-      if (error) throw error;
-      console.debug('get post -- ', results);
-      return results;
-    }
+  return new Promise((res, rej) =>
+    connection.query(
+      mysql.format('SELECT * FROM GCU.Posts WHERE ID = ?', [id]),
+      (error, results) => {
+        if (error) rej(error);
+        console.debug('get post -- ', results);
+        res(results);
+      }
+    )
   );
 };
 const create = ({ title, content, author } = {}) => {
@@ -25,11 +29,13 @@ const create = ({ title, content, author } = {}) => {
     'INSERT INTO GCU.Posts (ID, Title, Content, Author, Created, Updated) VALUES (?, ?, ?, ?, ?, ?)',
     [uuid(), title, content, author, mysql.raw('NOW()'), mysql.raw('NOW()')]
   );
-  return connection.query(query, (error, results) => {
-    if (error) throw error;
-    console.debug('create post -- ', results);
-    return results.affectedRows;
-  });
+  return new Promise((res, rej) =>
+    connection.query(query, (error, results) => {
+      if (error) rej(error);
+      console.debug('create post -- ', results);
+      res(results);
+    })
+  );
 };
 
 const update = ({ id, title, content }) => {
@@ -37,11 +43,13 @@ const update = ({ id, title, content }) => {
     'UPDATE GCU.Posts SET Title = ?, Content = ?, Updated = ? WHERE ID = ?',
     [title, content, mysql.raw('NOW()'), id]
   );
-  return connection.query(query, (error, results) => {
-    if (error) throw error;
-    console.debug('update post -- ', results);
-    return results.affectedRows;
-  });
+  return new Promise((res, rej) =>
+    connection.query(query, (error, results) => {
+      if (error) rej(error);
+      console.debug('update post -- ', results);
+      res(results);
+    })
+  );
 };
 
 const deleteItem = ({ id = '' } = {}) => {
@@ -49,11 +57,13 @@ const deleteItem = ({ id = '' } = {}) => {
     mysql.raw('NOW()'),
     id,
   ]);
-  return connection.query(query, (error, results) => {
-    if (error) throw error;
-    console.debug('delete post -- ', results);
-    return results.affectedRows;
-  });
+  return new Promise((res, rej) =>
+    connection.query(query, (error, results) => {
+      if (error) rej(error);
+      console.debug('delete post -- ', results);
+      res(results);
+    })
+  );
 };
 
 module.exports = {

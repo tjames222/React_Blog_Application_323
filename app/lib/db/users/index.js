@@ -30,11 +30,13 @@ const create = ({ firstName, lastName, email, password } = {}) => {
     'INSERT INTO GCU.Users (FirstName, LastName, Email, Password) VALUES (?, ?, ?, ?)',
     [firstName, lastName, email, password]
   );
-  return connection.query(query, (error, results) => {
-    if (error) throw error;
-    console.debug('create user -- ', results);
-    return results.affectedRows;
-  });
+  return new Promise((res, rej) =>
+    connection.query(query, (error, results) => {
+      if (error) rej(error);
+      console.debug('create user -- ', results);
+      return res(results);
+    })
+  );
 };
 
 const update = ({ email, oldPassword, newPassword }) => {
@@ -44,11 +46,13 @@ const update = ({ email, oldPassword, newPassword }) => {
     email,
     oldPassword,
   ]);
-  return connection.query(query, (error, results) => {
-    if (error) throw error;
-    console.debug('update user password -- ', results);
-    return results.affectedRows;
-  });
+  return new Promise((res, rej) =>
+    connection.query(query, (error, results) => {
+      if (error) rej(error);
+      console.debug('update user password -- ', results);
+      return res(results);
+    })
+  );
 };
 
 module.exports = {
