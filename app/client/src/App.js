@@ -4,7 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { LinkContainer } from 'react-router-bootstrap';
 
 // Pages
-import { Home, About, Posts } from './pages';
+import { Home, About, Posts, Login } from './pages';
 
 export default function App() {
   return (
@@ -36,6 +36,9 @@ export default function App() {
       <Switch>
         <Route path='/about'>
           <About />
+        </Route>
+        <Route path='/login'>
+          <Login />
         </Route>
         <Route path='/posts'>
           <Posts />
