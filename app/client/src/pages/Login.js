@@ -1,8 +1,15 @@
 import React from 'react';
+import { useHistory } from "react-router-dom";
 
 export const Login = () => {
+    let history = useHistory()
+
     return (
         <div>
+            <div>
+                <button onClick={() => history.goBack()}>BACK</button>
+            </div>
+            <div>
             <form>
                 <label>
                     EMAIL
@@ -13,19 +20,15 @@ export const Login = () => {
                     <input type="password" name="password" />
                 </label>
                 <input type="submit" value="SUBMIT" />
-            </form>
+                </form>
+            </div>
         </div>
     )
 };
 
 export default Login;
 
-/* 
-const App = () => {
-    const history = useHistory()
-        < i className = "icon list arrow left"
-    onClick = {() => {
-    history.goBack()
-}}></i >
-}
-*/
+
+
+
+
