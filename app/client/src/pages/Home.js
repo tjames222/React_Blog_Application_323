@@ -6,7 +6,7 @@ export const Home = () => {
     return (
         <div>
             <Link to="/login"><button type="button">LOGIN</button></Link>
-            <Link to="/login"><button type="button">CREATE ACCOUNT</button></Link>
+            <Link to="/register"><button type="button">CREATE ACCOUNT</button></Link>
         </div>
     );
 };
