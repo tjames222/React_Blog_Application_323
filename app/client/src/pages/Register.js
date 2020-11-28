@@ -1,67 +1,43 @@
-import React from 'react';
+import { useState } from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
-/*
+import { useHistory } from 'react-router-dom';
+
+// Helpers
+import { registerUser } from '../helpers/db/registerUser'
+
 export const Register = () => {
-    return (
-        <div>
-            <form>
-                <label>
-                    FIRST NAME
-                    <input type="text" name="firstName" />
-                </label>
-                <label>
-                    LAST NAME
-                    <input type="text" name="lastName" />
-                </label>
-                <label>
-                    EMAIL
-                    <input type="text" name="email" />
-                </label>
-                <label>
-                    PASSWORD
-                    <input type="password" name="password" />
-                </label>
-                <input type="submit" value="SUBMIT" />
-            </form>
-        </div>
-    )
-};
-*/
-
-export class Register extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+    const history = useHistory()
+const [values, setValues] = useState({ firstName: '', lastName: '', email: '', password: '' });
+const [registrationResult, setRegistrationResult] = useState(null)
 
   // General form handler
-  handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+  const handleChange = (event) => {
+    // Set all new values, including prior untouched ones
+    setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
   }
 
-  handleSubmit(event) {
+  const handleSubmit = (event) => {
     event.preventDefault();
     alert(
       'Registration Complete: ' +
-        this.state.firstName +
+        values.firstName +
         ' ' +
-        this.state.lastName +
+        values.lastName +
         ' ' +
-        this.state.email +
+        values.email +
         ' ' +
-        this.state.password
+        values.password
     );
+    registerUser({ ...values }).then(result => {
+        console.log('registered user: ', result)
+        setRegistrationResult(true)
+        history.push('/login')
+    }).catch(e => {
+        console.log('error in registration: ', e)
+        setRegistrationResult(false)
+    })
   }
 
-  render() {
     return (
       <Container fluid className='p-0 m-0' style={{width: '100%', height: '100%'}}>
         <div
@@ -74,7 +50,7 @@ export class Register extends React.Component {
           }}
           className='bg-dark-gray'
         >
-          BreadCrumbs
+          <h1>CREATE USER</h1>
         </div>
         <div
           style={{
@@ -87,7 +63,7 @@ export class Register extends React.Component {
           }}
           className='bg-dark pt-4 pb-4'
         >
-          <Form onSubmit={this.handleSubmit}>
+          <Form onSubmit={handleSubmit} validated={!!registrationResult}>
             <Row>
               <Col>
                 <Form.Group controlId='formGroupFirstName'>
@@ -95,8 +71,8 @@ export class Register extends React.Component {
                   <Form.Control
                     type='text'
                     name='firstName'
-                    value={this.state.firstName}
-                    onChange={this.handleChange}
+                    value={values.firstName}
+                    onChange={handleChange}
                     placeholder='John'
                     required={true}
                   />
@@ -108,8 +84,8 @@ export class Register extends React.Component {
                   <Form.Control
                     type='email'
                     name='email'
-                    value={this.state.email}
-                    onChange={this.handleChange}
+                    value={values.email}
+                    onChange={handleChange}
                     placeholder='name@gmail.com'
                     required={true}
                   />
@@ -123,8 +99,8 @@ export class Register extends React.Component {
                   <Form.Control
                     type='text'
                     name='lastName'
-                    value={this.state.lastName}
-                    onChange={this.handleChange}
+                    value={values.lastName}
+                    onChange={handleChange}
                     placeholder='Smith'
                     required={true}
                   />
@@ -136,8 +112,8 @@ export class Register extends React.Component {
                   <Form.Control
                     type='password'
                     name='password'
-                    value={this.state.password}
-                    onChange={this.handleChange}
+                    value={values.password}
+                    onChange={handleChange}
                     placeholder='Smith'
                     required={true}
                   />
@@ -152,51 +128,9 @@ export class Register extends React.Component {
                 </Col>
             </Row>
             </Form>
-            {/* <div>
-              <label>
-                FIRST NAME
-                <input
-                  type='text'
-                  name='firstName'
-                  value={this.state.firstName}
-                  onChange={this.handleChange}
-                />
-              </label>
-              <label>
-                LAST NAME
-                <input
-                  type='text'
-                  name='lastName'
-                  value={this.state.lastName}
-                  onChange={this.handleChange}
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                EMAIL
-                <input
-                  type='text'
-                  name='email'
-                  value={this.state.email}
-                  onChange={this.handleChange}
-                />
-              </label>
-              <label>
-                PASSWORD
-                <input
-                  type='password'
-                  name='password'
-                  value={this.state.password}
-                  onChange={this.handleChange}
-                />
-              </label>
-              <input type='submit' value='Submit' />
-            </div> */}
         </div>
       </Container>
     );
-  }
 }
 
 export default Register;
