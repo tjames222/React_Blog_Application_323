@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 
@@ -10,6 +10,12 @@ export const Register = () => {
 const [values, setValues] = useState({ firstName: '', lastName: '', email: '', password: '' });
 const [registrationResult, setRegistrationResult] = useState(null)
 
+    useEffect(() => {
+        if(registrationResult) setTimeout(() => history.push('/login'), 2000)
+    }, [registrationResult])
+
+
+
   // General form handler
   const handleChange = (event) => {
     // Set all new values, including prior untouched ones
@@ -18,22 +24,23 @@ const [registrationResult, setRegistrationResult] = useState(null)
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    alert(
-      'Registration Complete: ' +
-        values.firstName +
-        ' ' +
-        values.lastName +
-        ' ' +
-        values.email +
-        ' ' +
-        values.password
-    );
+    // alert(
+    //   'Registration Complete: ' +
+    //     values.firstName +
+    //     ' ' +
+    //     values.lastName +
+    //     ' ' +
+    //     values.email +
+    //     ' ' +
+    //     values.password
+    // );
     registerUser({ ...values }).then(result => {
         console.log('registered user: ', result)
         setRegistrationResult(true)
-        history.push('/login')
+
     }).catch(e => {
-        console.log('error in registration: ', e)
+        console.log('error in registration: ', e.message)
+        alert('There was an error with the registration: ' + e.message)
         setRegistrationResult(false)
     })
   }

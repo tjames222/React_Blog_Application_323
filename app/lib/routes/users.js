@@ -17,8 +17,13 @@ const createUserRoutes = (server) => {
   server.post('/api/user/create', (req, res) =>
     wrapError(res, async () => {
       const { firstName, lastName, email, password } = req.body;
-      const newUser = await create({ firstName, lastName, email, password });
-      res.json(newUser);
+      const createRes = await create({ firstName, lastName, email, password }).catch((e) => e);
+      if (createRes.affectedRows === 1) {
+        console.log(createRes);
+        const newUser = await get({ email });
+        res.json(newUser);
+      }
+      res.status(500).json({ message: 'User with that email already exists!' });
     })
   );
   server.post('/api/user/update', (req, res) =>

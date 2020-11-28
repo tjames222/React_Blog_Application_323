@@ -1,6 +1,9 @@
 const mysql = require('mysql');
 const { connection } = require('../conn');
 
+// Helpers
+const { stripProtectedFields } = require('../../helpers/stripProtectedFields');
+
 const all = ({ limit, sort } = {}) => {
   // TODO: Use filtering
   return new Promise((res, rej) =>
@@ -15,7 +18,7 @@ const all = ({ limit, sort } = {}) => {
 const get = ({ email } = {}) => {
   return new Promise((res, rej) =>
     connection.query(
-      mysql.format('SELECT * FROM GCU.Users WHERE Email = ?', [email]),
+      mysql.format('SELECT FirstName, LastName, Email FROM GCU.Users WHERE Email = ?', [email]),
       (error, results) => {
         if (error) rej(error);
         console.debug('get user -- ', results);

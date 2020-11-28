@@ -7,7 +7,11 @@ export const registerUser = ({ firstName, lastName, email, password } = {}) => {
   };
   return new Promise((res, rej) =>
     fetch('/api/user/create', requestOptions)
-      .then((response) => response.json())
+      .then(async (response) => {
+        const res = await response.json();
+        if (!response.ok) throw new Error(res.message);
+        return res;
+      })
       .then((data) => res(data))
       .catch((e) => rej(e))
   );
