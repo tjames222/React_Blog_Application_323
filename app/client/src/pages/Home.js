@@ -12,7 +12,7 @@ export const Home = () => {
       </h1>
       <Row className='d-flex justify-content-center align-items-center pt-4'>
         <Col style={{ maxWidth: '350px' }}>
-          <Link to='/login'>
+          <Link to='/register'>
             <Button block size='lg' variant='warning' type='button' className='text-light'>
               CREATE ACCOUNT
             </Button>
@@ -26,12 +26,13 @@ export const Home = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'flex-start',
+          borderTop: '15px solid #A0A09F',
         }}
         className='bg-dark mt-4 pt-4'
       >
         <Row className='d-flex justify-content-center align-items-center' style={{ width: '100%' }}>
           <Col style={{ maxWidth: '350px' }}>
-            <Link to='/register'>
+            <Link to='/login'>
               <Button block size='lg' variant='warning' type='button' className='text-light'>
                 LOGIN
               </Button>
