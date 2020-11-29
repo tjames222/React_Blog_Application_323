@@ -27,6 +27,18 @@ const get = ({ email } = {}) => {
     )
   );
 };
+const checkCreds = ({ email } = {}) => {
+  return new Promise((res, rej) =>
+    connection.query(
+      mysql.format('SELECT Password FROM GCU.Users WHERE Email = ?', [email]),
+      (error, results) => {
+        if (error) rej(error);
+        console.debug('get user password -- ', results);
+        res(results);
+      }
+    )
+  );
+};
 
 const create = ({ firstName, lastName, email, password } = {}) => {
   const query = mysql.format(
@@ -63,4 +75,5 @@ module.exports = {
   get,
   create,
   update,
+  checkCreds,
 };

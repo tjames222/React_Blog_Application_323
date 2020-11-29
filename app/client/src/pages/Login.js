@@ -3,7 +3,7 @@ import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 
 // Helpers
-import { registerUser } from '../helpers/db/registerUser';
+import { loginUser } from '../helpers/db/loginUser';
 
 export const Login = () => {
   const history = useHistory();
@@ -24,14 +24,16 @@ export const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    registerUser({ ...values })
+    // Store hash in your password DB.
+    loginUser({ ...values, password: values.password })
       .then((_) => {
+        window.localStorage.setItem('USER', JSON.stringify(_.user));
         setLoginResult(true);
       })
       .catch((e) => {
-        console.log('error in registration: ', e.message);
+        console.log('error in login: ', e.message);
         setLoginResult(false);
-        alert('There was an error with the registration: ' + e.message);
+        alert('There was an error with the login attempt: ' + e.message);
       });
   };
 

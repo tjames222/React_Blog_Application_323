@@ -28,10 +28,12 @@ const [registrationResult, setRegistrationResult] = useState(null)
   const handleSubmit = (event) => {
     event.preventDefault();
     bcrypt.genSalt(10, function(err, salt) {
+        console.log('salt: ', salt)
+        console.log('pass: ', values.password);
     bcrypt.hash(values.password, salt, function(err, hash) {
         // Store hash in your password DB.
         registerUser({ ...values, password: hash }).then(_ => {
-            setRegistrationResult(true)
+            // setRegistrationResult(true)
         }).catch(e => {
             console.log('error in registration: ', e.message)
             setRegistrationResult(false)
