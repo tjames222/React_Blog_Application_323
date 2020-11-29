@@ -17,10 +17,33 @@ export const Logout = () => {
   }, [count]);
 
   return (
-    <Container fluid>
-      <Row>
-        <Col>Redirecting to Home in {count}...</Col>
-      </Row>
+    <Container fluid className='p-0 m-0' style={{ width: '100%', height: '100%' }}>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+        }}
+        className='bg-dark-gray'
+      >
+        <h1>REDIRECTING</h1>
+      </div>
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+          borderTop: '15px solid #A0A09F',
+        }}
+        className='bg-dark pt-4 pb-4'
+      >
+        <Row>
+          <Col className='text-light'>Redirecting to Home in {count}...</Col>
+        </Row>
+      </div>
     </Container>
   );
 };
