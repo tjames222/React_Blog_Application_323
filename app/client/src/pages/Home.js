@@ -1,8 +1,22 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Jumbotron, Button, Row, Col } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { Jumbotron, Button, Row, Col, Toast } from 'react-bootstrap';
 
 export const Home = () => {
+  const history = useHistory()
+
+  const [showToast, setShowToast] = useState(false)
+  const toggleShowToast = () => setShowToast(!showToast)
+
+  const handleRegister = () => {
+    if(window.localStorage.getItem("USER")) toggleShowToast()
+    else history.push('/register')
+  }
+  const handleLogin = () => {
+    if(window.localStorage.getItem("USER")) toggleShowToast()
+    else history.push('/login')
+  }
+
   return (
     <Jumbotron className='ml-0 mr-0 pr-0 pl-0' style={{ height: '100%' }}>
       <h1 className='d-block justify-content-center text-center'>
@@ -12,11 +26,11 @@ export const Home = () => {
       </h1>
       <Row className='d-flex justify-content-center align-items-center pt-4'>
         <Col style={{ maxWidth: '350px' }}>
-          <Link to='/register'>
-            <Button block size='lg' variant='warning' type='button' className='text-light'>
+          {/* <Link to='/register'> */}
+            <Button block size='lg' variant='warning' type='button' className='text-light' onClick={handleRegister}>
               CREATE ACCOUNT
             </Button>
-          </Link>
+          {/* </Link> */}
         </Col>
       </Row>
       <div
@@ -32,13 +46,24 @@ export const Home = () => {
       >
         <Row className='d-flex justify-content-center align-items-center' style={{ width: '100%' }}>
           <Col style={{ maxWidth: '350px' }}>
-            <Link to='/login'>
-              <Button block size='lg' variant='warning' type='button' className='text-light'>
+            {/* <Link to='/login'> */}
+              <Button block size='lg' variant='warning' type='button' className='text-light' onClick={handleLogin}>
                 LOGIN
               </Button>
-            </Link>
+            {/* </Link> */}
           </Col>
         </Row>
+         <Toast show={showToast} onClose={toggleShowToast} style={{position: 'absolute', right: '30px', bottom: '30px'}}>
+          <Toast.Header>
+            <img
+              src="holder.js/20x20?text=%20"
+              className="rounded mr-2"
+              alt=""
+            />
+            <strong className="mr-auto">Notice</strong>
+          </Toast.Header>
+          <Toast.Body>You're already logged in, check out some posts!</Toast.Body>
+        </Toast>
       </div>
     </Jumbotron>
   );

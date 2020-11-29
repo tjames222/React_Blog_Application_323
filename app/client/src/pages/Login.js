@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 
@@ -9,6 +9,11 @@ export const Login = () => {
   const history = useHistory();
   const [values, setValues] = useState({ email: '', password: '' });
   const [loginResult, setLoginResult] = useState(null);
+
+  // Before first render, double-check if user is already logged in
+  useLayoutEffect(() => {
+    if (window.localStorage.getItem('USER')) history.push('/');
+  }, []);
 
   // This effect will see changes after a successful login attempt,
   //  and handle the redirect for us
@@ -61,7 +66,7 @@ export const Login = () => {
         }}
         className='bg-dark pt-4 pb-4'
       >
-        <Form onSubmit={handleSubmit} validated={!!setLoginResult}>
+        <Form onSubmit={handleSubmit} validated={!!loginResult}>
           <Row>
             <Col>
               <Form.Group controlId='formGroupEmail'>
