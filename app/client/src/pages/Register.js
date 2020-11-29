@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
+import bcrypt from 'bcryptjs'
 
 // Helpers
 import { registerUser } from '../helpers/db/registerUser'
@@ -10,6 +11,8 @@ export const Register = () => {
 const [values, setValues] = useState({ firstName: '', lastName: '', email: '', password: '' });
 const [registrationResult, setRegistrationResult] = useState(null)
 
+    // This effect will see changes after a successful account creation,
+    //  and handle the redirect for us
     useEffect(() => {
         if(registrationResult) setTimeout(() => history.push('/login'), 2000)
     }, [registrationResult])
@@ -24,25 +27,18 @@ const [registrationResult, setRegistrationResult] = useState(null)
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // alert(
-    //   'Registration Complete: ' +
-    //     values.firstName +
-    //     ' ' +
-    //     values.lastName +
-    //     ' ' +
-    //     values.email +
-    //     ' ' +
-    //     values.password
-    // );
-    registerUser({ ...values }).then(result => {
-        console.log('registered user: ', result)
-        setRegistrationResult(true)
-
-    }).catch(e => {
-        console.log('error in registration: ', e.message)
-        alert('There was an error with the registration: ' + e.message)
-        setRegistrationResult(false)
-    })
+    bcrypt.genSalt(10, function(err, salt) {
+    bcrypt.hash(values.password, salt, function(err, hash) {
+        // Store hash in your password DB.
+        registerUser({ ...values, password: hash }).then(_ => {
+            setRegistrationResult(true)
+        }).catch(e => {
+            console.log('error in registration: ', e.message)
+            setRegistrationResult(false)
+            alert('There was an error with the registration: ' + e.message)
+        })
+    });
+});
   }
 
     return (

@@ -8,7 +8,7 @@ const createUserRoutes = (server) => {
       res.json(result);
     })
   );
-  server.get('/api/users', (req, res) =>
+  server.get('/api/users', (_, res) =>
     wrapError(res, async () => {
       const result = await all();
       res.json(result);
@@ -19,7 +19,6 @@ const createUserRoutes = (server) => {
       const { firstName, lastName, email, password } = req.body;
       const createRes = await create({ firstName, lastName, email, password }).catch((e) => e);
       if (createRes.affectedRows === 1) {
-        console.log(createRes);
         const newUser = await get({ email });
         res.json(newUser);
       }
@@ -29,8 +28,12 @@ const createUserRoutes = (server) => {
   server.post('/api/user/update', (req, res) =>
     wrapError(res, async () => {
       const { oldPassword, newPassword, email } = req.body;
-      const updatedUser = await update({ email, newPassword, oldPassword });
-      res.json(updatedUser);
+      const updateRes = await update({ email, newPassword, oldPassword }).catch((e) => e);
+      if (updateRes.affectedRows === 1) {
+        const updatedUser = await get({ email });
+        res.json(updatedUser);
+      }
+      res.status(500).json({ message: 'Could not update User!' });
     })
   );
 };
