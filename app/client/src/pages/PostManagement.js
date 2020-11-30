@@ -1,20 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import { Container, Row, Col, Button, Toast } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 // Helpers
-import { listAllPosts } from './../helpers/db/listAllPosts';
+import { listPostsByUser } from './../helpers/db/listPostsByUser';
 
-export const Posts = () => {
+export const PostManagement = () => {
+  const history = useHistory();
   const [posts, setPosts] = useState([]);
   const [errMsg, setErrMsg] = useState(null);
   const [showToast, setShowToast] = useState(false);
   const toggleShowToast = () => setShowToast(!showToast);
 
+  const handleCreatePost = () => history.push('/post/create');
+
+  // If user is not logged in, redirect them
+  useLayoutEffect(() => {
+    if (!window.localStorage.getItem('USER')) history.push('/login');
+  }, []);
+
   useEffect(() => {
-    listAllPosts()
+    const email = (JSON.parse(window.localStorage.getItem('USER')) || {}).email;
+    listPostsByUser({ email })
       .then((res) => {
-        console.log('setting posts: ', res);
         setPosts(res);
       })
       .catch((e) => {
@@ -33,19 +41,38 @@ export const Posts = () => {
         }}
         className='bg-dark-gray'
       >
-        <h1>POST FEED</h1>
+        <h1>MANAGE YOUR POSTS</h1>
       </div>
       <div
         style={{
           width: '100%',
           height: '100%',
           display: 'flex',
-          justifyContent: 'center',
+          flexDirection: 'column',
           alignItems: 'flex-start',
           borderTop: '15px solid #A0A09F',
         }}
         className='bg-dark pt-4 pb-4'
       >
+        <Row className='d-flex justify-content-center align-items-center' style={{ width: '100%' }}>
+          <Col style={{ maxWidth: '350px' }}>
+            <Button
+              block
+              size='lg'
+              variant='warning'
+              type='button'
+              className='text-light'
+              onClick={handleCreatePost}
+            >
+              WRITE NEW POST
+            </Button>
+          </Col>
+        </Row>
+        <Row className='d-flex justify-content-center align-items-center' style={{ width: '100%' }}>
+          <Col style={{ maxWidth: '450px' }} className='m-0 p-0 pt-4'>
+            <h1 className='text-light m-0'>EDIT YOUR POSTS</h1>
+          </Col>
+        </Row>
         {posts.map((el) => {
           return (
             <Row key={el.ID}>
@@ -75,4 +102,4 @@ export const Posts = () => {
   );
 };
 
-export default Posts;
+export default PostManagement;

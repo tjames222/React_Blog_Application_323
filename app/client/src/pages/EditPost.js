@@ -1,26 +1,38 @@
 import { useState, useEffect } from 'react';
-import { Container, Row, Col, Button, Toast } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
+import { Container, Toast } from 'react-bootstrap';
+
+// UI Comps
+import PostEditor from '../components/Editor';
 
 // Helpers
-import { listAllPosts } from './../helpers/db/listAllPosts';
+import { getPost } from './../helpers/db/getPost';
 
-export const Posts = () => {
-  const [posts, setPosts] = useState([]);
+export const EditPost = () => {
+  const history = useHistory();
+  const { id } = useParams();
+  console.log('post id in editor: ', id);
+  const [post, setPost] = useState({});
   const [errMsg, setErrMsg] = useState(null);
   const [showToast, setShowToast] = useState(false);
   const toggleShowToast = () => setShowToast(!showToast);
 
   useEffect(() => {
-    listAllPosts()
-      .then((res) => {
-        console.log('setting posts: ', res);
-        setPosts(res);
-      })
-      .catch((e) => {
-        setErrMsg(e.message);
-      });
-  }, []);
+    if (id !== undefined) {
+      getPost({ id })
+        .then((res) => {
+          console.log('setting post: ', res);
+          if (JSON.stringify(res) === JSON.stringify({})) {
+            // Go back, no post exists for this id
+            history.push('/account/posts');
+          }
+          setPost(res);
+        })
+        .catch((e) => {
+          setErrMsg(e.message);
+        });
+    }
+  }, [id]);
 
   return (
     <Container fluid className='p-0 m-0' style={{ width: '100%', height: '100%' }}>
@@ -33,7 +45,7 @@ export const Posts = () => {
         }}
         className='bg-dark-gray'
       >
-        <h1>POST FEED</h1>
+        <h1>POST</h1>
       </div>
       <div
         style={{
@@ -46,19 +58,9 @@ export const Posts = () => {
         }}
         className='bg-dark pt-4 pb-4'
       >
-        {posts.map((el) => {
-          return (
-            <Row key={el.ID}>
-              <Col>
-                <Link to={`/post/${el.ID}`}>
-                  <Button variant='warning' type='button' size='lg'>
-                    {el.Title}
-                  </Button>
-                </Link>
-              </Col>
-            </Row>
-          );
-        })}
+        <h2>{post.Title}</h2>
+        {/** Render the DraftJS Editor (readonly) in here */}
+        <PostEditor readOnly={true} data={post.Content || null} />
         <Toast
           show={showToast}
           onClose={toggleShowToast}
@@ -75,4 +77,4 @@ export const Posts = () => {
   );
 };
 
-export default Posts;
+export default EditPost;
