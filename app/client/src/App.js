@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { LinkContainer } from 'react-router-bootstrap';
 
 // Pages
-import { Home, About, Posts, Login, Logout, Register, Account, Title } from './pages';
+import { Home, About, Posts, Login, Logout, Register, Account, Post } from './pages';
 
 export default function App() {
   const [authed, setAuthed] = useState(false)
@@ -71,9 +71,9 @@ export default function App() {
         <Route path='/account'>
           <Account />
         </Route>
-        {/* <Route path='/postView'>
-          <Title />
-        </Route> */}
+        <Route path='/post/:id'>
+          <Post />
+        </Route>
         <Route path='/'>
           <Home />
         </Route>

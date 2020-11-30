@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Jumbotron, Button, Row, Col, Toast } from 'react-bootstrap';
 
 export const Home = () => {
@@ -26,11 +26,9 @@ export const Home = () => {
       </h1>
       <Row className='d-flex justify-content-center align-items-center pt-4'>
         <Col style={{ maxWidth: '350px' }}>
-          {/* <Link to='/register'> */}
             <Button block size='lg' variant='warning' type='button' className='text-light' onClick={handleRegister}>
               CREATE ACCOUNT
             </Button>
-          {/* </Link> */}
         </Col>
       </Row>
       <div
@@ -46,11 +44,9 @@ export const Home = () => {
       >
         <Row className='d-flex justify-content-center align-items-center' style={{ width: '100%' }}>
           <Col style={{ maxWidth: '350px' }}>
-            {/* <Link to='/login'> */}
               <Button block size='lg' variant='warning' type='button' className='text-light' onClick={handleLogin}>
                 LOGIN
               </Button>
-            {/* </Link> */}
           </Col>
         </Row>
          <Toast show={showToast} onClose={toggleShowToast} style={{position: 'absolute', right: '30px', bottom: '30px'}}>
