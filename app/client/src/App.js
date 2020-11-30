@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { LinkContainer } from 'react-router-bootstrap';
 
 // Pages
-import { Home, About, Posts, Login, Logout, Register, Account, Post } from './pages';
+import { Home, About, Posts, Login, Logout, Register, Account, Post, PostManagement, EditPost } from './pages';
 
 export default function App() {
   const [authed, setAuthed] = useState(false)
@@ -43,6 +43,11 @@ export default function App() {
           </Nav.Item>
         </Nav>
          <Nav className="justify-content-end" style={{width: '20%'}}>
+          {authed && (<Nav.Item>
+            <LinkContainer to={'/account/posts'}>
+              <Nav.Link>WRITE</Nav.Link>
+            </LinkContainer>
+          </Nav.Item>)}
           <Nav.Item>
             <LinkContainer to={authed ? '/logout' : '/login'}>
               <Nav.Link>{authed ? 'LOGOUT' : 'LOGIN'}</Nav.Link>
@@ -65,14 +70,23 @@ export default function App() {
         <Route path='/register'>
           <Register />
         </Route>
-        <Route path='/posts'>
+        <Route exact path='/posts'>
           <Posts />
         </Route>
-        <Route path='/account'>
+        <Route exact path='/account'>
           <Account />
+        </Route>
+        <Route path='/account/posts'>
+          <PostManagement />
         </Route>
         <Route path='/post/:id'>
           <Post />
+        </Route>
+        <Route exact path='/post/create'>
+          <EditPost />
+        </Route>
+        <Route path='/post/edit/:id'>
+          <EditPost />
         </Route>
         <Route path='/'>
           <Home />

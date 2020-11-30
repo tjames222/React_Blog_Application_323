@@ -2,14 +2,19 @@ const mysql = require('mysql');
 const { connection } = require('../conn');
 const { v4: uuid } = require('uuid');
 
-const all = ({ limit, sort } = {}) => {
-  // TODO: Use filtering
+const all = ({ limit, sort, user } = {}) => {
   return new Promise((res, rej) =>
-    connection.query('SELECT * FROM GCU.Posts', (error, results) => {
-      if (error) rej(error);
-      console.debug('all posts -- ', results);
-      res(results);
-    })
+    connection.query(
+      mysql.format(
+        'SELECT * FROM GCU.Posts WHERE Deleted IS NULL' + (user ? ' AND Author = ?' : ''),
+        user ? [user] : []
+      ),
+      (error, results) => {
+        if (error) rej(error);
+        console.debug('all posts -- ', results);
+        res(results);
+      }
+    )
   );
 };
 const get = ({ id } = {}) => {
@@ -18,8 +23,8 @@ const get = ({ id } = {}) => {
       mysql.format('SELECT * FROM GCU.Posts WHERE ID = ?', [id]),
       (error, results) => {
         if (error) rej(error);
-        console.debug('get post -- ', results);
-        res(results);
+        console.debug('get post -- ', results[0]);
+        res(results[0] || {});
       }
     )
   );

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { Container, Row, Col, Button, Toast } from 'react-bootstrap';
+import { Container, Toast } from 'react-bootstrap';
 
 // UI Comps
 import PostEditor from '../components/Editor';
@@ -8,28 +8,31 @@ import PostEditor from '../components/Editor';
 // Helpers
 import { getPost } from './../helpers/db/getPost';
 
-export const Post = () => {
+export const EditPost = () => {
   const history = useHistory();
   const { id } = useParams();
+  console.log('post id in editor: ', id);
   const [post, setPost] = useState({});
   const [errMsg, setErrMsg] = useState(null);
   const [showToast, setShowToast] = useState(false);
   const toggleShowToast = () => setShowToast(!showToast);
 
   useEffect(() => {
-    getPost({ id })
-      .then((res) => {
-        console.log('setting post: ', res);
-        if (JSON.stringify(res) === JSON.stringify({})) {
-          // Go back, no post exists for this id
-          history.push('/posts');
-        }
-        setPost(res);
-      })
-      .catch((e) => {
-        setErrMsg(e.message);
-      });
-  }, []);
+    if (id !== undefined) {
+      getPost({ id })
+        .then((res) => {
+          console.log('setting post: ', res);
+          if (JSON.stringify(res) === JSON.stringify({})) {
+            // Go back, no post exists for this id
+            history.push('/account/posts');
+          }
+          setPost(res);
+        })
+        .catch((e) => {
+          setErrMsg(e.message);
+        });
+    }
+  }, [id]);
 
   return (
     <Container fluid className='p-0 m-0' style={{ width: '100%', height: '100%' }}>
@@ -74,4 +77,4 @@ export const Post = () => {
   );
 };
 
-export default Post;
+export default EditPost;

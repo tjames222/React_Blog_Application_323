@@ -14,6 +14,12 @@ const createPostRoutes = (server) => {
       res.json(result);
     })
   );
+  server.get('/api/posts/:user', (req, res) =>
+    wrapError(res, async () => {
+      const result = await all({ user: req.params.user });
+      res.json(result);
+    })
+  );
   server.post('/api/posts/create', (req, res) =>
     wrapError(res, async () => {
       const { title, content, author } = req.body;

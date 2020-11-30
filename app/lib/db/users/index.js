@@ -2,7 +2,7 @@ const mysql = require('mysql');
 const { connection } = require('../conn');
 
 // Helpers
-const { stripProtectedFields } = require('../../helpers/stripProtectedFields');
+// const { stripProtectedFields } = require('../../helpers/stripProtectedFields');
 
 const all = ({ limit, sort } = {}) => {
   // TODO: Use filtering
@@ -21,8 +21,8 @@ const get = ({ email } = {}) => {
       mysql.format('SELECT FirstName, LastName, Email FROM GCU.Users WHERE Email = ?', [email]),
       (error, results) => {
         if (error) rej(error);
-        console.debug('get user -- ', results);
-        res(results);
+        console.debug('get user -- ', results[0]);
+        res(results[0] || {});
       }
     )
   );
@@ -54,12 +54,13 @@ const create = ({ firstName, lastName, email, password } = {}) => {
   );
 };
 
-const update = ({ email, oldPassword, newPassword }) => {
+// Assumes all checks for password sameness have passed
+const update = ({ email, password }) => {
+  //
   // Check that old password matches current password in query
-  const query = mysql.format('UPDATE GCU.Users SET Password = ? WHERE Email = ? AND Password = ?', [
-    newPassword,
+  const query = mysql.format('UPDATE GCU.Users SET Password = ? WHERE Email = ?', [
+    password,
     email,
-    oldPassword,
   ]);
   return new Promise((res, rej) =>
     connection.query(query, (error, results) => {
