@@ -18,7 +18,10 @@ const [registrationResult, setRegistrationResult] = useState(null)
     }, [registrationResult])
 
 
-
+  /**
+   * Handles form input
+   * @param {} event 
+   */
   // General form handler
   const handleChange = (event) => {
     // Set all new values, including prior untouched ones
