@@ -9,7 +9,7 @@ import { updateUser } from '../helpers/db/updateUser';
 /**
  * Renders a account page
  * @param useHistory
- * @param setValues {email, password}
+ * @param setValues 
  * @param setUpdateResult
  * @param handleEditPosts
  * @param useLayoutEffect

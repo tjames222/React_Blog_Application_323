@@ -8,7 +8,7 @@ import { loginUser } from '../helpers/db/loginUser';
 /**
  * Renders a Login form
  * @param useHistory
- * @param setValues {email, password}
+ * @param setValues 
  * @param setLoginResult
  * @param useLayoutEffect
  * @param useEffect

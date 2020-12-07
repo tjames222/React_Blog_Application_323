@@ -9,7 +9,7 @@ import { registerUser } from '../helpers/db/registerUser'
 /**
  * Renders a registration form
  * @param useHistory
- * @param setValues {firstName, lastName, email, password}
+ * @param setValues 
  * @param setRegistrationResult
  * @param handleChange 
  * @param handleSubmit

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: postView.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,37 +17,43 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: postView.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h1>CST-323CLC</h1>
-<p>CST-323 group project repo</p></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+
+/**
+ * Renders postView page
+ * @param Title
+ * @param props
+ */
+export const Title = () => {
+    return (
+        &lt;div>
+            &lt;form>
+                &lt;label>
+                    EMAIL
+                    &lt;input type="text" name="email" />
+                &lt;/label>
+                &lt;label>
+                    PASSWORD
+                    &lt;input type="password" name="password" />
+                &lt;/label>
+                &lt;input type="submit" value="SUBMIT" />
+            &lt;/form>
+        &lt;/div>
+    )
+};
+
+export default Title;</code></pre>
+        </article>
     </section>
-
-
 
 
 
